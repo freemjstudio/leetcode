@@ -1,5 +1,3 @@
-# https://school.programmers.co.kr/learn/courses/30/lessons/42586
-
 def solution(progresses, speeds):
     answer = []
     stack = []
@@ -8,10 +6,24 @@ def solution(progresses, speeds):
         progress = 100 - progresses[i]
         if progress % speeds[i] != 0:
             day = progress // speeds[i] + 1
-            stack.append(day)
         else:
             day = progress // speeds[i]
+
+        if len(stack) == 0:
             stack.append(day)
-    print(stack)
+        else:
+            count = 1
+            if stack[-1] > day:
+                while stack:
+                    if stack[-1] > day:
+                        stack.pop()
+                        count += 1
+                    else:
+                        break
+                answer.append(count)
+            else:
+                stack.append(day)
+    if stack:
+        answer.append(1)
 
     return answer
