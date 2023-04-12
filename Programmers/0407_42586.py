@@ -14,5 +14,4 @@ def solution(progresses, speeds):
                 count = 0
             day += 1
     answer.append(count)
-
     return answer
