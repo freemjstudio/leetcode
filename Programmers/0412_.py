@@ -10,7 +10,7 @@ for _ in range(N):
     data.append([x, a])
     total_people += a
 
-data.sort(key= lambda x:x[0])
+data.sort()
 
 count = 0
 for i in range(N):
@@ -20,3 +20,4 @@ for i in range(N):
         print(t)
         break
 
+# 사람 수만 따져도 가능한 이유는 -> N개의 마을 간격이 일정하기 때문이다 !
