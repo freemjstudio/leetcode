@@ -15,10 +15,10 @@ dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
 def bfs(sx, sy):
-    size = 0
+    size = 1
     queue = deque()
     queue.append((sx, sy))
-
+    visited[sx][sy] = True
     while queue:
         x, y = queue.popleft()
 
@@ -35,10 +35,9 @@ def bfs(sx, sy):
 for i in range(n):
     for j in range(m):
         if array[i][j] == 1 and not visited[i][j]:
-            visited[i][j] = False
             result = bfs(i, j)
+            count += 1
             if result > 0:
-                count += 1
                 biggest = max(biggest, result)
 
 print(count)
