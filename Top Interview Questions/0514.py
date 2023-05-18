@@ -1,2 +1,4 @@
-# https://leetcode.com/problems/roman-to-integer/
+# https://leetcode.com/problems/longest-palindromic-substring/
 
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
