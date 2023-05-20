@@ -2,35 +2,21 @@
 import heapq
 
 
-def check(arr, K):
-    for i in arr:
-        if i < K:
-            return False
-    return True
-
-
 def solution(scoville, K):
     answer = 0
     queue = []
-    INF = 10000000
+
     # 초기 힙큐 구성
     for i in scoville:
         heapq.heappush(queue, i)
-    # print(heapq)
-    while True:
-        low1 = heapq.heappop(queue)  # heappop 하면 가장 작은 원소 리턴
-        low2 = heapq.heappop(queue)
-        mixed = low1 + low2 * 2
-        heapq.heappush(queue, i)
+
+    while queue[0] < K:
+
+        heapq.heappush(queue, heapq.heappop(queue) + heapq.heappop(queue) * 2)
+
         answer += 1  # 섞는 횟수 + 1
 
-        if check(queue, K):
-            break
-        if answer >= INF:
-            break
-
-            # 정답 출력
-    if answer >= INF:
-        return -1
-    else:
-        return answer
+        # 예외 처리 K 이상이 안되는 경우
+        if len(queue) == 1 and queue[0] < K:
+            return -1
+    return answer
