@@ -5,18 +5,14 @@ class Solution:
     def longestPalindrome(self, s: str) -> str:
         answer = ""
         n = len(s)
-        if n <= 1:
-            return s
-        if len(s) == 2:
-            if s[0] == s[1]:
-                answer = s
-            else:
-                answer = s[0]
-        for left in range(n-1):
-            for right in range(left+1, n):
-                temp = s[left:right+1]
+
+        for left in range(n):
+            for right in range(left+1, n+1):
+                temp = s[left:right]
                 if temp == temp[::-1]:
                     if len(temp) > len(answer):
                         answer = temp
+        if len(answer) == 0:
+            return s[0]
 
         return answer
