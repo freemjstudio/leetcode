@@ -23,6 +23,7 @@ class Solution:
                 temp += 1
             if len(answer) < temp:
                 answer = s[t_left:t_right+1]
+
         return answer
 
 
