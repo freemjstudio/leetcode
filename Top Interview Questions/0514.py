@@ -9,7 +9,7 @@ class Solution:
         for left in range(n):
             for right in range(left+1, n+1):
                 temp = s[left:right]
-                if temp == temp[::-1]:
+                if temp == temp[::-1]: # temp[::-1] 이 reversed() 보다 성능 낮다고 하던데..
                     if len(temp) > len(answer):
                         answer = temp
         if len(answer) == 0:
