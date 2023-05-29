@@ -12,3 +12,7 @@ for _ in range(n):
         if command == "leave":
             # key 삭제
             d.pop(name, None) # dictionary 에 Key값이 없으면 None을 리턴한다.
+
+answer = sorted(d.keys(), reverse=True)
+for name in answer:
+    print(name)
