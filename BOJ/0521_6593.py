@@ -6,24 +6,21 @@ from collections import deque
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-
 def bfs(building, sf, sx, sy, ef, ex, ey, L, C, R):
     time = 0  #
     queue = deque([])
     queue.append((sf, sx, sy)) # start point
     while queue:
-
         f, x, y = queue.pop()
-        if building[x][x][y] == 'E':
+        if building[f][x][y] == 'E':
             return time
 
-        if f == ef:  # 목적지 층에 도착 ,
+        if f == ef:  # 목적지 층에 도착
             for i in range(4):
                 nx = x + dx[i]
                 ny = y + dy[i]
                 if 0 <= nx < R and 0 <= ny < C and building[f][nx][ny] != '#':
                     queue.append((f, nx, ny))
-
         else:  # 시작층, 목적지층 아닌 경우
             for i in range(4):
                 nx = x + dx[i]
@@ -38,7 +35,11 @@ def bfs(building, sf, sx, sy, ef, ex, ey, L, C, R):
     return 0
 
 while True:
-    L, R, C = map(int, input().split())
+    line = input()
+    if len(line) == 0:
+        continue
+    else:
+        L, R, C = map(int, line.split())
     if L == R == C == 0:
         break # test case end
 
@@ -50,19 +51,22 @@ while True:
     ef, ex, ey = 0, 0, 0
 
     for f in range(L):
-        floor = [] # 이거 2차원 배열로 만들어야 함
-        for i in range(R):
-            data = input()
-            temp = []
-            for j in data:
-                if j == 'S':
+        floor = [] # 이거 2차원 배열
+        for i in range(R+1):
+            data = input() # S....
+            temp = [] # ['S', '.', '.', '.', '.']
+            for j in range(len(data)):
+                if data[j] == 'S':
                     sf, sx, sy = f, i, j
-                if j == 'E':
+                if data[j] == 'E':
                     ef, ex, ey = f, i, j
-                temp.append(j)
+                temp.append(data[j])
+
+            if len(temp) == 0:
+                continue
             floor.append(temp)
         building.append(floor)
-    print(building)
+ #   print(building)
 
     answer = bfs(building, sf, sx, sy, ef, ex, ey, L, C, R)
     if answer:
