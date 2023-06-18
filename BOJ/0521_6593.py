@@ -1,16 +1,16 @@
 from collections import deque
 
 # 방향 이동 - 동서남북 + 상하
-dx = [-1, 1, 0, 0, 0, 0]
+dx = [1, -1, 0, 0, 0, 0]
 dy = [0, 0, -1, 1, 0, 0]
-dz = [0, 0, 0, 0, -1, 1]
+dz = [0, 0, 0, 0, 1, -1]
 
 def bfs():
     queue = deque()
     queue.append([sf, sy, sx]) # start point
     visited[sf][sy][sx] = 1
     while queue:
-        f, y, x = queue.pop()
+        f, y, x = queue.popleft()
 
         for i in range(6):
             nf, ny, nx = f + dz[i], y + dy[i], x + dx[i]
