@@ -7,7 +7,7 @@ def solution(priorities, location):
     queue = deque(priorities)
     idx = location  # process의 위치를 저장
 
-    while True:
+    while len(queue) > 1:
         now = queue.popleft()
         if now < max(queue):  # 더 우선순위가 높은 것이 있을 떄
             queue.append(now)
