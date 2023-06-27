@@ -1,10 +1,7 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/49189
 
 from collections import deque
-
-
 def solution(n, edge):
-    INF = int(1e9)
 
     answer = 0
     graph = [[] for _ in range(n + 1)]  # node 1 ~ n 까지
