@@ -12,7 +12,7 @@ n, m = map(int, input().split())
 array = []
 answer = int(1e9) # 총 소요 시간
 empty = 0 # 빈칸 개수
-
+wall = 0 # 벽의 개수
 virus_pos = [] # 2 번 좌표값
 
 for i in range(n):
@@ -22,7 +22,17 @@ for i in range(n):
     for j in range(n):
         if data[j] == 2:
             virus_pos.append([i, j])
+        elif data[j] == 1:
+            wall += 1
 
 
-def bfs():
-    queue = deque()
+def bfs(v_list):
+    visited = [[-1] * n for _ in range(n)]
+    queue = deque([])
+    for i in range(m):
+        queue.append([v_list[i][0], v_list[i][1]])
+        visited[v_list[i][0]][v_list[i][1]] += 1
+
+
+
+for comb in combinations(virus_pos, m):
