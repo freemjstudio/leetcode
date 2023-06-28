@@ -25,14 +25,31 @@ for i in range(n):
         elif data[j] == 1:
             wall += 1
 
-
 def bfs(v_list):
     visited = [[-1] * n for _ in range(n)]
     queue = deque([])
     for i in range(m):
         queue.append([v_list[i][0], v_list[i][1]])
         visited[v_list[i][0]][v_list[i][1]] += 1
-
-
+    time = 0
+    while queue:
+        x, y = queue.popleft()
+        for i in range(4):
+            nx, ny = x + dx[i], y + dy[i]
+            if 0 <= nx < n and 0 <= ny < n and visited[nx][ny] == -1: # not visited
+                if array[nx][ny] == 0: # 빈칸
+                    visited[nx][ny] = visited[x][y] + 1
+                    queue.append([nx, ny])
+                    time = max(time, visited[nx][ny])
+                elif array[nx][ny] == 2: # virus
+                    visited[nx][ny] = visited[x][y] + 1
+                    queue.append([nx, ny])
+    if visited.count(-1) == wall:
+        return time
+    else:
+        return int(1e9)
 
 for comb in combinations(virus_pos, m):
+    result = bfs(comb)
+    answer = min(result, answer)
+print(answer)
