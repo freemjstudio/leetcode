@@ -10,8 +10,8 @@ def solution(N, number):
 
         # 사칙연산
         for j in range(i - 1):
-            for x in dp[j]:  # i개 이전의 dp 값에서 꺼내오기
-                for y in dp[-j - 1]:  #
+            for x in dp[j]:  # 1 ~ n-1 번 사용
+                for y in dp[-j - 1]:  # n-1 ~ 1 번 사용
                     temp_dp.add(x + y)
                     temp_dp.add(x - y)
                     temp_dp.add(x * y)
