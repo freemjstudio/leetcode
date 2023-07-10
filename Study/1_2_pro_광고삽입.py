@@ -7,22 +7,18 @@ Lv.2	17684	압축
 
 def solution(msg):
     answer = []
-    word_num = 27
     word_dict = {chr(i): (i - 64) for i in range(65, 91)}
 
     n = len(msg)
-    start = 0
+    w, c = 0, 0  # 현재 입력, 다음 글자
     while True:
-        if start == n - 1:
+        c += 1  # 다음 입력
+        if c == n:  # 마지막 인덱스
+            answer.append(word_dict[msg[w:c]])
             break
-        for end in range(n - 1, start, -1):
-            if msg[start:end + 1] in word_dict:
-                answer.append(word_dict[msg[start:end + 1]])
-            else:  # 없는 경우
-                if end == start:  # 마지막일 때
-                    word_dict[msg[start]] = word_num
-                    word_num += 1
-                else:
-                    continue
+        if msg[w:c + 1] not in word_dict:  # 없는 경우
+            word_dict[msg[w:c + 1]] = len(word_dict) + 1
+            answer.append(word_dict[msg[w:c]])
+            w = c
 
     return answer
