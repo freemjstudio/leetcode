@@ -1,7 +1,13 @@
 def solution(play_time, adv_time, logs):
-    answer = ''
+    answer = ''  # min value
 
     if play_time == adv_time:
-        answer = '00:00:00'
+        return '00:00:00'
+
+    start_points = []
+    logs.sort()
+    for log in logs:
+        s, e = log.split("-")
+        start_points.append(s)
 
     return answer
