@@ -6,4 +6,6 @@ answer = n*n
 for i in range(n):
     array.append(list(map(int, input())))
 
+
+
 print(answer)
