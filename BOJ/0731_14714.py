@@ -7,7 +7,7 @@ b -= 1 # index 맞추기
 flag = False
 
 # #  visited[a or b][a누구][b누구]
-#
+
 visited = [[[0] * 2 for _ in range(n)] for _ in range(n)] # 3차원 배열
 visited[0][a][b] = 1 # 0 == a 지목권
 visited[1][a][b] = 1 # 1 == b 지목권
@@ -16,7 +16,33 @@ queue = deque([(a, b, 1)]) # 현재 지목권 가진 사람 a, b, 지목 횟수
 while queue:
     cur_a, cur_b, count = queue.popleft()
     if count % 2 == 1: # A
+        left_a = a - da
+        right_a = a + da
+        if left_a < 0:
+            left_a += n
+        if right_a >= n:
+            right_a -= n
+        # 방문 처리
+        if visited[0][left_a][b] == 0:
+            visited[0][left_a][b] = count + 1
+            queue.append((left_a, b, count+1))
+        if visited[0][right_a][b] == 0:
+            visited[0][right_a][b] = count + 1
+            queue.append((right_a, b, count+1))
     else: # B
+        left_b = b - db
+        right_b = b + db
+        if left_b < 0:
+            left_b += n
+        if right_b >= n:
+            right_b -= n
+
+        if visited[1][a][left_b] == 0:
+            visited[1][a][left_b] = count + 1
+            queue.append((a, left_b, count+1))
+        if visited[1][a][right_b] == 0:
+            visited[1][a][right_b] = count + 1
+            queue.append((a, right_b, count+1))
 
 INF = int(1e9)
 answer = INF
