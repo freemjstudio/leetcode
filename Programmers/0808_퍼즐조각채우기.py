@@ -4,18 +4,22 @@ from collections import deque
 dx = [-1, 1, 0, 0]
 dy = [0, 0, -1, 1]
 
-def get_position(sx, sy, table, visited, mode = 1):
-    one_piece = [(sx, sy)] # 한 조각을 이루는 좌표 리스트
+def get_position(sx, sy, table, visited, mode):
+    one_piece = [(0, 0)] # 한 조각을 이루는 좌표 리스트
     visited[sx][sy] = True
     queue = deque(one_piece)
     n = len(table)
     while queue:
         x, y = queue.popleft()
         for i in range(4):
+            # 실제 board 위에서 좌표
+            bx = sx + dx[i] + x
+            by = sy + dy[i] + y
+
             nx = x + dx[i]
             ny = y + dy[i]
-            if 0 <= nx < n and 0 <= ny < n and not visited[nx][ny] and table[nx][ny] == mode:
-                visited[nx][ny] = True
+            if 0 <= bx < n and 0 <= by < n and not visited[bx][by] and table[bx][by] == mode:
+                visited[bx][by] = True
                 queue.append((nx, ny))
                 one_piece.append((nx, ny))
 
@@ -24,10 +28,9 @@ def get_position(sx, sy, table, visited, mode = 1):
 def rotate_puzzle(one_piece): # ex. [(0,0), (1,0)]
     # 90 도 회전한 퍼즐 모양 모음
     rotated_puzzle_list = [one_piece]
-
     for i in range(3):
         new_pos = []
-        for x, y in one_piece[-1]:
+        for x, y in rotated_puzzle_list[-1]:
             nx = -y
             ny = x
             new_pos.append((nx, ny))
@@ -43,7 +46,7 @@ def get_puzzle(table):
     for i in range(n):
         for j in range(n):
             if table[i][j] and not visited[i][j]:
-                one_piece = get_position(i, j, table, visited, 1)
+                one_piece = get_position(i, j, table, visited, 1) # def get_position(sx, sy, table, visited, mode = 1):
                 count = len(one_piece)
                 # rotate 시킨 좌표까지
 
@@ -73,12 +76,13 @@ def dfs(puzzle_list, game_board):
     for i in range(n):
         for j in range(n):
             if not visited[i][j] and game_board[i][j] == 0:
-                one_vacant = get_position(i, j, game_board, 0) # 빈칸 크기
+                one_vacant = get_position(i, j, game_board, visited, 0) # 빈칸 크기 -> def get_position(sx, sy, table, visited, mode = 1):
                 size_vacant = len(one_vacant)
 
                 # puzzle_list에 빈공간에 들어갈 수 있는 조각 확인
                 for vx, vy in one_vacant:
                     flag = False
+                    x, y = vx + i, vy + j
                     # puzzle_list
                     for k in range(m):
                         if check_puzzle[k]: # 이미 사용한 퍼즐 조각
@@ -87,9 +91,10 @@ def dfs(puzzle_list, game_board):
                         if size_puzzle != size_vacant: # 반드시 크기가 딱 맞아야 함 !
                             continue
                         for puzzle in puzzle_list[k][1:]:
-                            if check(game_board, puzzle, vx, vy): # true
+                            if check(game_board, puzzle, x, y): # true
                                 flag = True
                                 answer += size_puzzle
+                                check_puzzle[k] = True
                                 break
                         if flag:
                             break
@@ -98,10 +103,13 @@ def dfs(puzzle_list, game_board):
     return answer
 
 
-
+# game_board = [[1,1,0,0,1,0],[0,0,1,0,1,0],[0,1,1,0,0,1],[1,1,0,1,1,1],[1,0,0,0,1,0],[0,1,1,1,0,0]]
+# table = [[1,0,0,1,1,0],[1,0,1,0,1,0],[0,1,1,0,1,1],[0,0,1,0,0,0],[1,1,0,1,1,0],[0,1,0,0,0,0]]
 
 def solution(game_board, table):
     puzzle_list = get_puzzle(table)
     answer = dfs(puzzle_list, game_board)
 
     return answer
+
+# print(solution(game_board, table))
