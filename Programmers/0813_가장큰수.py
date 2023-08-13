@@ -16,6 +16,7 @@ def solution(numbers):
 
 '''
 
+'''
 from collections import defaultdict
 
 
@@ -44,4 +45,16 @@ def solution(numbers):
     for s_num in same_length_num:
         answer += str(num_dict[s_num])
 
+    return answer
+'''
+
+def solution(numbers):
+    answer = ''
+    strnum = list(map(str, numbers))
+    same_length = [[i, i * (12 // len(i))] for i in strnum]
+    same_length.sort(key=lambda x: x[1], reverse=True)
+    for x in same_length:
+        answer += x[0]  # original num
+
+    answer = str(int(answer))  # 00 -> 0 예외 처리
     return answer
