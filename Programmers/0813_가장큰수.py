@@ -17,6 +17,9 @@ def solution(numbers):
 '''
 
 '''
+
+예외 발생 ! -> case 2 번 처리 못함 
+
 from collections import defaultdict
 
 
