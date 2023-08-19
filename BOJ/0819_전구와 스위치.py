@@ -6,51 +6,54 @@ answer = 0
 N = int(input())
 a = list(map(int, list(input())))
 b = list(map(int, list(input())))
-'''
-0 : ON 
-1 : OFF
-직전에 누른 스위치는 누르지 않는다 ! 
-'''
+
+temp1 = a[:]
+temp2 = a[:] # deep copy
+
 def check(arr1, arr2):
     if arr1 == arr2:
         return True
     return False
 
-# 이미 a == b 인 경우
-if check(a, b):
-    print(0)
-    exit(0)
+# from index 0
+def from_zero(arr):
+    count = 1
+    arr[0] = (not arr[0])
+    arr[1] = (not arr[1])
 
-def dfs(switch, arr, cnt):
-    if cnt == 10000:
-        return -1
-    # switch 넣었을 때 검토
-    if switch == 0:
-        arr[0] = (not arr[1])
-        arr[1] = (not arr[0])
-    elif switch == N-1:
-        arr[N-1] = (not arr[N-1])
-        arr[N-2] = (not arr[N-2])
-    else:
-        arr[switch-1] = (not arr[switch-1])
-        arr[switch] = (not arr[switch])
-        arr[switch+1] = (not arr[switch+1])
+    for i in range(1, N):
+        if arr[i-1] != b[i-1]: # i-1, i, i+1 모두 동일해야 하므로 i-1 부터 체크
+            count += 1
+            arr[i-1] = (not arr[i-1])
+            arr[i] = (not arr[i])
+            if i != N-1:
+                arr[i+1] = (not arr[i+1])
 
     if check(arr, b):
-        return cnt
+        return count
+    return -1
+# from index 1
+def from_one(arr):
+    count = 0
+    for i in range(1, N):
+        if arr[i-1] != b[i-1]:
+            count += 1
+            arr[i - 1] = (not arr[i - 1])
+            arr[i] = (not arr[i])
+            if i != N-1:
+                arr[i+1] = (not arr[i+1])
+    if check(arr, b):
+        return count
+    return -1
 
-    for next in range(N):
-        if next == switch:
-            continue
-        dfs(next, arr, cnt+1)
+result1 = from_zero(temp1)
+result2 = from_one(temp2)
 
-for i in range(N):
-    result = dfs(i, a, 1)
-    if result != -1:
-        flag = True
-        answer = min(answer, result)
-
-if flag:
-    print(answer)
-else:
+if result1 != -1 and result2 == -1:
+    print(result1)
+elif result1 == -1 and result2 != -1:
+    print(result2)
+elif result1 == -1 and result2 == -1:
     print(-1)
+else:
+    print(min(result1, result2))
