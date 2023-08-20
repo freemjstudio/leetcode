@@ -1,8 +1,3 @@
-import sys
-sys.setrecursionlimit(10**7)
-flag = False
-answer = 0
-
 N = int(input())
 a = list(map(int, list(input())))
 b = list(map(int, list(input())))
