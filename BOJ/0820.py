@@ -4,13 +4,38 @@ answer = 0
 
 stack = []
 bars = []
+max_length = 0
+max_height = 0
+max_height_index = 0
 for _ in range(N):
     L, H = map(int, input().split())
     bars.append([L, H])
+    max_length = max(L, max_length)
+    if max_height < H:
+        max_height = H # 분기점
+        max_height_index = L
 
-bars.sort() # [[2, 4], [4, 6], [5, 3], [8, 10], [11, 4], [13, 6], [15, 8]]
+data = [0] * 1000
 for l, h in bars:
-    # 자기 자신 height 보다 높은거 나오면 stack 에 넣고 낮은거 나오면 pop 하는 방식으로 구하기
+    data[l] = h
 
-    print(l, h)
+now_max_height = 0 # 지금까지 등장한 height 중 가장 큰 height
+# left -> right
+for i in range(max_height_index+1):
+    h = data[i]
+    if h > now_max_height:
+        now_max_height = h
+    answer += now_max_height
+
+now_max_height = 0
+
+# left <- right
+for j in range(max_length, max_height_index, -1):
+    h = data[j]
+    if h > now_max_height:
+        now_max_height = h
+    answer += max_height
+
+
+
 print(answer)
