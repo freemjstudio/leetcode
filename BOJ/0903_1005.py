@@ -27,7 +27,8 @@ for _ in range(T):
         for next in graph[now]: # now -> 에서 갈 수 있는 node 탐색하기
             indegree[next] -= 1
             # dp 값 갱신하기
-            dp[next] = max(dp[now] + times[next], dp[next])
+            dp[next] = max(dp[now] + times[next], dp[next]) # 누적되는 비용 갱신하기
+            # 여기서 max 값을 저장해야 하는 이유는 모든 과정이 끝나야 next node로 갈 수 있기 때문이다 !
             if indegree[next] == 0:
                 queue.append(next)
 
