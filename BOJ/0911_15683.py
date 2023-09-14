@@ -8,14 +8,13 @@ dx = [-1, 1, 0, 0] # 상 하 좌 우
 dy = [0, 0, -1, 1]
 
 c_type = {1: [[0], [1], [2], [3]],
-        2: [(0, 1), (2, 3)], # 상-하, 좌-우
-        3: [(0,3), (1,3), (0, 2), (1, 2)],
-        4: [(0,1,2), (0,1,3), (1,2,3), (0,2,3)],
-        5: [(0,1,2,3)]} # 상하좌우
+        2: [[0, 1], [2, 3]], # 상-하, 좌-우
+        3: [[0,3], [1,3], [0, 2], [1, 2]],
+        4: [[0,1,2], [0,1,3], [0,2,3], [1,2,3]],
+        5: [[0,1,2,3]]} # 상하좌우
 
 board = []
 cctv = [] # [cctv_type, x, y]
-visited = [[False] * M for _ in range(N)]
 total = 0
 
 for i in range(N):
@@ -29,38 +28,37 @@ for i in range(N):
 
 answer = N*M
 
-# backtracking
-def dfs(index, count):
-    global c_type, answer, dx, dy, visited
+
+def cctv_check(dir, x, y, board):
+    for i in dir:
+        nx, ny = x, y
+        while True:
+            nx += dx[i]
+            ny += dy[i]
+            if not (0 <= nx < N and 0 <= ny < M):
+                break
+            if board[nx][ny] == 6:
+                break
+            elif board[nx][ny] == 0:
+                board[nx][ny] = 7 # 방문 표시
+
+def dfs(index, board):
+    global c_type, answer, dx, dy
     if index == len(cctv):
-        if answer > (total-count) and (total-count) == 3:
-            for v in visited:
-                print(*v)
-        answer = min(answer, total - count)
+        cnt = 0
+        for i in range(N):
+            cnt += board[i].count(0) # 사각지대는 아직 0
+
+        answer = min(answer, cnt)
         return
 
     t, x, y = cctv[index]
-    for i in range(len(c_type[t])): # 4개
-        for j in range(len(c_type[t][i])):
-            temp_visited = copy.deepcopy(visited)  # 변형하기 이전 형태 keep 하기
-            temp_count = 0
-            nx, ny = x, y
+    temp_board = copy.deepcopy(board) # 원래 보드 복제
+    for dir in c_type[t]:
+        cctv_check(dir, x, y, temp_board) # cctv 작동
+        dfs(index+1, temp_board)
+        temp_board = copy.deepcopy(board) # 백트래킹
 
-            while True:  # cctv 감시 칸 범위 벗어나기 이전까지 모두 확인
-                nx += dx[c_type[t][i][j]]
-                ny += dy[c_type[t][i][j]]
-                if 0 <= nx < N and 0 <= ny < M:
-                    if board[nx][ny] == 0 and not visited[nx][ny]:
-                        visited[nx][ny] = True
-                        temp_count += 1
-                    elif board[nx][ny] == 6:
-                        break
-                    else:  # cctv 자리
-                        visited[nx][ny] = True
-                else:
-                    break
-            dfs(index+1, count+temp_count)
-            visited = temp_visited # 변형하기 이전으로 복귀하기
 
-dfs(0, 0)
+dfs(0, board)
 print(answer)
