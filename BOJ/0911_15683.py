@@ -33,14 +33,19 @@ answer = N*M
 def dfs(index, count):
     global c_type, answer, dx, dy, visited
     if index == len(cctv):
+        if answer > (total-count) and (total-count) == 3:
+            for v in visited:
+                print(*v)
         answer = min(answer, total - count)
         return
+
     t, x, y = cctv[index]
     for i in range(len(c_type[t])): # 4개
-        temp_visited = copy.deepcopy(visited) # 변형하기 이전 형태 keep 하기
-        temp_count = 0
         for j in range(len(c_type[t][i])):
+            temp_visited = copy.deepcopy(visited)  # 변형하기 이전 형태 keep 하기
+            temp_count = 0
             nx, ny = x, y
+
             while True:  # cctv 감시 칸 범위 벗어나기 이전까지 모두 확인
                 nx += dx[c_type[t][i][j]]
                 ny += dy[c_type[t][i][j]]
