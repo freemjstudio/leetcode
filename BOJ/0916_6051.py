@@ -3,4 +3,3 @@ N = int(input())
 query = []
 for _ in range(N):
     data = list(map(int, input().split()))
-
