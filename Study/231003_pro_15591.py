@@ -1,6 +1,8 @@
 # https://www.acmicpc.net/problem/15591
 from collections import deque
+import sys
 
+input = sys.stdin.readline
 N, Q = map(int, input().split())
 graph = [[] for _ in range(N+1)]
 INF = int(1e9)
