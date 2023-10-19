@@ -13,10 +13,8 @@ for i in range(N):
         good = (data[left] + data[right])
         if left == i:
             left += 1
-            continue
         if right == i:
             right -= 1
-            continue
         if good == now:
             answer += 1
             break
