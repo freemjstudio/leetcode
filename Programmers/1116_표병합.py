@@ -1,46 +1,71 @@
-# https://school.programmers.co.kr/learn/courses/30/lessons/150366
-from collections import defaultdict
+import sys
+
+sys.setrecursionlimit(10 ** 6)
 
 
 def solution(commands):
     answer = []
-    parents = [[(r, c) for r in range(51)] for c in range(51)]
+    parents = [[(r, c) for c in range(51)] for r in range(51)]
     table = [["EMPTY"] * 51 for _ in range(51)]
-    value_dict = defaultdict(list)
 
     # union-find 알고리즘
+
+    def union_parents(r1, c1, r2, c2):
+        parents[r2][c2] = parents[r1]
+
     def find_parents(r, c):
         if parents[r][c] == (r, c):
-            return (r, c)
-        p = parents[r][c]
-        find_parents(p[0], p[1])
+            return parents[r][c]
+        pr, pc = parents[r][c]
+        parents[r][c] = find_parents(pr, pc)
+        return parents[r][c]  # parents 가 가지고 있던 값을 리턴
 
     def PRINT(r, c):
-        return table[r][c]
+        pr, pc = find(r, c)
+        answer.append(table[pr][pc])
 
     def UPDATE(r, c, value):
-        table[r][c] = value
+        pr, pc = find_parents(r, c)  # ????
+        table[pr][pc] = value
 
     def UPDATE2(value1, value2):
         # value1 을 가지고 있는 모든 셀 선택하기
         for i in range(1, 51):
             for j in range(1, 51):
-                if table[i][j] == value1:
-                    table[i][j] = value2
+                pr, pc = find_parents(i, j)
+                if table[pr][pc] == value1:
+                    table[pr][pc] = value2
 
     def MERGE(r1, c1, r2, c2):
+        r1, c1 = find_parents(r1, c1)
+        r2, c2 = find_parents(r2, c2)
+
+        if (r1, c1) == (r2, c2):
+            return
         if table[r1][c1] != "EMPTY":
-            table[r2][c2] = table[r1][c1]
-            parents[r2][c2] = (r1, c1)
+            union_parents(r1, c1, r2, c2)
         else:
-            table[r1][c1] = table[r2][c2]
-            parents[r1][c1] = (r2, c2)
+            union_parents(r2, c2, r1, c1)
 
     def UNMERGE(r, c):
         # parents 찾기
-        p = find_parents(r, c)
+        pr, pc = find_parents(r, c)
         # parents 에 저장된 값
-        original = table[p[0]][p[1]]
+        original = table[pr][pc]
+
+        merge_list = []
+        for x in range(51):
+            for y in range(51):
+                px, py = find_parents(x, y)
+                if (px, py) == (pr, pc):
+                    merge_list.append((x, y))
+
+        for x, y in merge_list:
+            parents[x][y] = (x, y)
+            if (x, y) != (r, c):
+                table[x][y] = "EMPTY"
+            else:
+                table[x][y] = original
 
     for command in commands:
         cmd, *args = command.split()
@@ -53,14 +78,12 @@ def solution(commands):
                 UPDATE2(value1, value2)
         elif cmd == "MERGE":
             r1, c1, r2, c2 = map(int, args)
-            if r1 == r2 and c1 == c2:
-                continue
             MERGE(r1, c1, r2, c2)
         elif cmd == "UNMERGE":
             r, c = map(int, args)
             UNMERGE(r, c)
-        elif cmd == "PRINT":
+        else:
             r, c = map(int, args)
-            answer.append(PRINT(r, c))
+            PRINT(r, c)
 
     return answer
