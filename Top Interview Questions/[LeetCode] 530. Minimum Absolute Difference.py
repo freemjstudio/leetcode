@@ -6,17 +6,21 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
-        prev = int(1e9)
-        answer = int(1e9) # diff
-        def inorder(root): # inorder 로 해야 오름차순 순회 가능
-            if root is None:inorder(0)
-                return # exit
-            # left
+        prev = 100000
+        diff = 200000
+
+        def inorder(root):
+            nonlocal diff, prev
+
+            if not root:
+                return
             inorder(root.left)
-            # root -> 여기서 값 비교하기
-            answer = min(answer, root.value - prev)
-            # right
+            diff = min(diff, abs(root.val - prev))
+            prev = root.val
             inorder(root.right)
-        return answer
+
+        inorder(root)
+        return diff
