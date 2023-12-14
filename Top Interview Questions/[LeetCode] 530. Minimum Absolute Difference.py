@@ -8,3 +8,15 @@
 #         self.right = right
 class Solution:
     def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        prev = int(1e9)
+        answer = int(1e9) # diff
+        def inorder(root): # inorder 로 해야 오름차순 순회 가능
+            if root is None:inorder(0)
+                return # exit
+            # left
+            inorder(root.left)
+            # root -> 여기서 값 비교하기
+            answer = min(answer, root.value - prev)
+            # right
+            inorder(root.right)
+        return answer
