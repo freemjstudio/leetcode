@@ -14,15 +14,18 @@ class Solution:
         dy = [0, 0, -1, 1]
 
         def dfs(i, j, arr, idx):
-
+            if len(arr) == len(word):
+                return
             for k in range(4):
                 nx = x + dx[k]
                 ny = y + dy[k]
                 if 0 <= nx < N and 0 <= ny <= M:
                     ch = board[nx][ny]
 
-                    if word[idx] == arr[idx]:
-
+                    if word[idx] == ch:
+                        arr.append(ch)
+                        dfs(nx, ny, arr, idx+1)
+                        arr.pop()
 
 
         for i in range(N):
