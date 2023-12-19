@@ -16,5 +16,5 @@ print(result)
 dp = [0] * (N+1) # dp 에 0 등장하는 개수 저장하기
 for i in range(N):
     dp[i] = dp[i//5] + i//5
-print(dp[N]
+print(dp[N])
 '''
