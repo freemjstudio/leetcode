@@ -20,3 +20,16 @@ class Solution:
             return isValidBST(root.left, minNode, root) and isValidBST(root.right, root, maxNode) # left subtree && right subtree 모두 검증하기
 
         return isValidBST(root, None, None)
+
+def isValidBST(root: Optional[TreeNode]) -> bool:
+    def isValidBST(root: Optional[TreeNode], minNode: Optional[TreeNode], maxNode: Optional[TreeNode]) -> bool:
+
+        if root == None:
+            return True
+        if minNode and minNode.val >= root.val:
+            return False
+        if maxNode and maxNode.val <= root.val:
+            return False
+        return isValidBST(root.left, minNode, root) and isValidBST(root.right, root, maxNode)
+    return isValidBST(root, )
+

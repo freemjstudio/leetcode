@@ -2,7 +2,6 @@
 def simplifyPath(path: str) -> str:
     stack = []
     tokens = path.split("/")
-    print(tokens)
     for token in tokens:
         if token == ".." and stack: # 상위 경로로 이동 -> 경로 삭제 !
             stack.pop()
