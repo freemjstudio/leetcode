@@ -26,7 +26,7 @@ if __name__ == '__main__':
     stack.push(20)
     stack.push(10)
     print(stack.getMax())
-    s.push(50)
+    stack.push(50)
     print(stack.getMax())
 
 '''
