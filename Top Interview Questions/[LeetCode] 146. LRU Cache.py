@@ -6,9 +6,8 @@ class Node:
         self.key, self.value = key, value
         self.prev = self.next = None
 class LRUCache:
-
     def __init__(self, capacity: int):
-        self.__capacity = capacity
+        self.__capacity = capacity # minimum capacity
         self.__cache = {} # Dictionary Type for O(1)
         self.left, self.right = Node(), Node()
         self.left.next = self.right
@@ -16,7 +15,10 @@ class LRUCache:
 
     def insert(self, node):
 
+
     def remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
 
     def get(self, key: int) -> int:
         if key in self.__cache: # check the key in the cache
