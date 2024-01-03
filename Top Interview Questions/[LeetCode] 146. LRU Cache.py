@@ -1,6 +1,5 @@
 # https://leetcode.com/problems/lru-cache/?envType=study-plan-v2&envId=top-interview-150
 
-
 class Node:
     def __init__(self, key=0, value=0):
         self.key, self.value = key, value
@@ -8,14 +7,16 @@ class Node:
 class LRUCache:
     def __init__(self, capacity: int):
         self.__capacity = capacity # minimum capacity
-        self.__cache = {} # Dictionary Type for O(1)
+        self.__cache = {} # Dictionary Type - 시간 복잡도 : O(1), 공간 복잡도 O(N)
         self.left, self.right = Node(), Node()
+        # left : least recently used node
+        # right : most recently used node
         self.left.next = self.right
         self.right.prev = self.left
 
     def insert(self, node):
-        last = self.right.prev
-        last.next = node
+        last = self.right.prev # 가장 최근에 사용된 node (right)를 갱신한다.
+        last.next = node # new node 가 most recently used 가 된다.
         node.next = self.right
         node.prev = last
         self.right.prev = node
