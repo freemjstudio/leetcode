@@ -1,24 +1,14 @@
-from itertools import combinations
-
 def solution(clothes):
-    answer = 0
-    # 1개 , 2 개 , .. N 개 입는 조합
-    d = {}
+    answer = 1
+    hash_map = {}
+    for name, category in clothes:
+        hash_map[category] = hash_map.get(category, 0) + 1
 
-    for item in clothes:
-        v, k = item
-        if k in d.keys():
-            d[k].append(v)
-        else:
-            d[k] = [v]
-    categories = list(d.keys())
+    for category in hash_map.keys():
+        answer *= (hash_map[category] + 1)
 
-    for i in range(1, len(categories) + 1):
-            comb = combinations(categories, i)
-            for com in comb:
-                temp = 1
-                for c in com:
-                    temp *= len(d[c])
-                answer += temp
+    return answer - 1  # 아무 옷도 입지 않는 경우 제외
 
-    return answer
+'''
+경우의 수 개념을 생각하기 
+'''
