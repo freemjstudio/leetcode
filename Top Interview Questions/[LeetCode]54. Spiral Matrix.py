@@ -18,8 +18,6 @@ class Solution:
                 i, j = i - dx[k], j - dy[k]
                 k = (k+1) % 4
 
-
-
         return answer
 
 
