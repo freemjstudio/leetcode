@@ -25,26 +25,24 @@ n	times	return
 
 20분이 되었을 때, 두 번째 심사대가 비지만 6번째 사람이 그곳에서 심사를 받지 않고 1분을 더 기다린 후에 첫 번째 심사대에서 심사를 받으면 28분에 모든 사람의 심사가 끝납니다.
 
-
 """
 
 def solution(n, times):
     answer = 0
-    INF = 1000000000 # 최대 소요 값
-    left, right = 1, INF
+    left, right = min(times), max(times) * n
 
-    while left < right:
+    while left <= right:
         mid = (left+right)//2
         count = 0 # 심사를 Mid 시간 내에 받을 수 있는 사람의 수
 
         for t in times:
             count += (mid // t)
+            if count >= n:
+                break # 시간 단축용 컷팅
 
         if count < n:
             left = mid+1
-        elif count > n:
+        elif count >= n:
+            answer = mid # 최솟값 갱신
             right = mid-1
-        else:
-            return (mid-1)
-
-print(solution(6, [7, 10]))
+    return answer
