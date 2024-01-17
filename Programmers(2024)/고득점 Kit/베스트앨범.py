@@ -19,3 +19,9 @@ def solution(genres, plays):
             answer.append(sorted_song[i][1])
 
     return answer
+
+
+'''
+다른 풀이 
+'''
+
