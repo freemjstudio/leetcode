@@ -36,15 +36,27 @@ operations	return
 333을 삽입합니다.
 이중 우선순위 큐에 -45, 45, 333이 남아있으므로, [333, -45]를 반환합니다.
 '''
+import heapq
 
 def solution(operations):
     answer = []
-    queue = [] # priority queue
+    min_queue = [] # priority queue -> default is min
+    max_queue = []
 
     for oper in operations:
         op, num = oper.split()
-        if not queue and op == 'D':
+        if (not min_queue or not max_queue) and op == 'D':
             continue
-
+        if op == "I":
+            heapq.heappush(min_queue, int(num))
+            heapq.heappush(max_queue, (-int(num), int(num)))
+        if op == "D" and num == "-1":
+            val = heapq.heappop(min_queue)
+            max_queue.remove((-val, val))
+            answer.append(val)
+        elif op == "D" and num == "1":
+            val = heapq.heappop(max_queue)
+            min_queue.remove(val)
+            answer.append(val[1])
 
     return answer
