@@ -45,18 +45,31 @@ def solution(operations):
 
     for oper in operations:
         op, num = oper.split()
-        if (not min_queue or not max_queue) and op == 'D':
-            continue
+
         if op == "I":
             heapq.heappush(min_queue, int(num))
             heapq.heappush(max_queue, (-int(num), int(num)))
+        if (not min_queue or not max_queue) and op == 'D':
+            continue
+
         if op == "D" and num == "-1":
             val = heapq.heappop(min_queue)
             max_queue.remove((-val, val))
-            answer.append(val)
+
         elif op == "D" and num == "1":
             val = heapq.heappop(max_queue)
             min_queue.remove(val)
-            answer.append(val[1])
 
-    return answer
+        #
+        if not min_queue or not max_queue:
+            return [0, 0]
+        else: # 근데 원소가 1개만 남으면 어떡하지 ?
+            max_val = heapq.heappop(max_queue)
+            min_val = heapq.heappop(min_queue)
+            return [max_val[1], min_val]
+
+
+
+# test case 1
+tc = ["I 16", "I -5643", "D -1", "D 1", "D 1", "I 123", "D -1"]
+print(solution(tc))
