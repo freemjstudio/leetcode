@@ -49,7 +49,7 @@ def solution(operations):
         if op == "I":
             heapq.heappush(min_queue, int(num))
             heapq.heappush(max_queue, (-int(num), int(num)))
-        if (not min_queue or not max_queue) and op == 'D':
+        if (not min_queue) and op == 'D':
             continue
 
         if op == "D" and num == "-1":
@@ -58,15 +58,15 @@ def solution(operations):
 
         elif op == "D" and num == "1":
             val = heapq.heappop(max_queue)
-            min_queue.remove(val)
+            min_queue.remove(val[1])
 
         #
-        if not min_queue or not max_queue:
-            return [0, 0]
-        else: # 근데 원소가 1개만 남으면 어떡하지 ?
-            max_val = heapq.heappop(max_queue)
-            min_val = heapq.heappop(min_queue)
-            return [max_val[1], min_val]
+    if not min_queue or not max_queue:
+        return [0, 0]
+    else: # 근데 원소가 1개만 남으면 어떡하지 ?
+        max_val = heapq.heappop(max_queue)
+        min_val = heapq.heappop(min_queue)
+        return [max_val[1], min_val]
 
 
 
