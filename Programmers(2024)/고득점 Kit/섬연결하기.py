@@ -8,12 +8,13 @@ def solution(n, costs):
         graph[a][b] = cost
         graph[b][a] = cost
 
-    visited = [0] * n
+        # 0 부터 가기
 
-    # 0 부터 가기
     def dfs(node, visited, total):
+        nonlocal answer
         if sum(visited) == 4:
-            return min(answer, total)
+            # print(total)
+            answer = min(answer, total)
 
         for x in range(n):
             if graph[node][x] != 0 and visited[x] == 0:
@@ -21,6 +22,9 @@ def solution(n, costs):
                 dfs(x, visited, total + graph[node][x])
                 visited[x] = 0
 
-    dfs(0, visited, 0)
+    for start in range(n):
+        visited = [0] * n
+        visited[start] = 1
+        dfs(start, visited, 0)
 
     return answer
