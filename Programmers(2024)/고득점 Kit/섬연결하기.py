@@ -1,30 +1,33 @@
 # https://school.programmers.co.kr/learn/courses/30/lessons/42861
 
 def solution(n, costs):
-    answer = int(1e9)  # min 값으로 갱신해 나가기
-    graph = [[0] * n for _ in range(n)]
+    answer = 0 # total cost
+    # 자기 자신을 부모 노드로 초기화
+    parent = [i for i in range(n)]
 
+    def find_parent(x, parent):
+        if parent[x] != x:
+            parent[x] = find_parent(parent[x], parent)
+        return parent[x]
+
+    def union_parent(a, b, parent):
+        a = find_parent(a, parent)
+        b = find_parent(b, parent)
+
+        if a < b:
+            parent[b] = a
+        else:
+            parent[a] = b
+
+    edges = []
     for a, b, cost in costs:
-        graph[a][b] = cost
-        graph[b][a] = cost
+        edges.append((cost, a, b))
+    edges.sort()
 
-        # 0 부터 가기
-
-    def dfs(node, visited, total):
-        nonlocal answer
-        if sum(visited) == 4:
-            # print(total)
-            answer = min(answer, total)
-
-        for x in range(n):
-            if graph[node][x] != 0 and visited[x] == 0:
-                visited[x] = 1
-                dfs(x, visited, total + graph[node][x])
-                visited[x] = 0
-
-    for start in range(n):
-        visited = [0] * n
-        visited[start] = 1
-        dfs(start, visited, 0)
+    for edge in edges:
+        cost, start, end = edge
+        if find_parent(start, parent) != find_parent(end, parent):
+            union_parent(start, end, parent)
+            answer += cost
 
     return answer
