@@ -23,7 +23,7 @@ Constraints:
 
 2 <= nums.length <= 105
 -30 <= nums[i] <= 30
-The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+The product of any prrefix or suffix of nums is guaranteed to fit in a 32-bit integer.
 
 
 Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
@@ -31,14 +31,20 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 
 class Solution:
     def productExceptSelf(self, nums: list[int]) -> list[int]:
-        answer = []
         N = len(nums)
-        arr1 = [1 for _ in range(N)] # left2right
-        arr2 = [1 for _ in range(N)] # right2left
+        answer = [1 for _ in range(N)]
+        for i in range(1, N):
+            answer[i] = answer[i-1] * nums[i-1]
+        # print(answer) # left -> right
+        temp = 1
+        # right -> left
+        for i in range(N-2, -1, -1):
+            temp *= nums[i+1]
+            answer[i] *= temp
 
-        for i in range(len(nums)):
-            answer.append(arr1[i] * arr2[i])
         return answer
 
+# Test Case 
 s = Solution()
-s.productExceptSelf(nums=[1,2,3,4])
+answer = s.productExceptSelf(nums=[1,2,3,4])
+print(answer)
