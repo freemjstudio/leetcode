@@ -29,5 +29,22 @@ Explanation: We can not enter room number 2 since the only key that unlocks it i
 
 
 class Solution:
-    def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
+    def canVisitAllRooms(self, rooms: list[list[int]]) -> bool:
+        n = len(rooms)
+        visited = [0] * n
 
+        def dfs(now):
+            nonlocal visited
+            visited[now] = 1
+            for next in rooms[now]:
+                if not visited[next]:
+                    dfs(next)
+        dfs(0)
+
+        return True if sum(visited) == n else False
+
+tc = Solution()
+# rooms = [[1],[2],[3],[]]
+rooms = [[1,3],[3,0,1],[2],[0]]
+result = tc.canVisitAllRooms(rooms)
+print(result)
