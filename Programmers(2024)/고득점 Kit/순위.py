@@ -18,3 +18,41 @@ n	results	return
 5번 선수는 4위인 2번 선수에게 패배했기 때문에 5위입니다.
 
 '''
+
+
+class Node:
+    in_cnt = 0  # 들어오는 간선
+    out_cnt = 0  # 나오는 간선
+
+
+def solution(n, results):
+    answer = 0
+    graph = [[0] * (n + 1) for _ in range(n + 1)]
+    # 	{4: [3, 2], 3: [2], 1: [2], 2: [5]}
+    visited = [False] * (n + 1)  # 1 ~ n
+    node_list = []
+    for _ in range(n + 1):
+        node = Node()
+        node_list.append(node)
+
+    for a, b in results:
+        if a not in graph:
+            graph[a] = [b]
+        else:
+            graph[a].append(b)
+
+    # visit graph
+    for start in range(1, n + 1):
+        # if not visited[start]:
+        for next_node in graph[start]:
+            node_list[start].out_cnt += 1
+            node_list[next_node].in_cnt += 1
+
+    # check node
+    for i in range(1, n + 1):
+        now = node_list[i]
+        print(now.in_cnt, now.out_cnt)
+        if (now.in_cnt + now.out_cnt) == n:
+            answer += 1
+
+    return answer
