@@ -19,40 +19,28 @@ n	results	return
 
 '''
 
-
-class Node:
-    in_cnt = 0  # 들어오는 간선
-    out_cnt = 0  # 나오는 간선
+from collections import defaultdict
 
 
 def solution(n, results):
     answer = 0
-    graph = [[0] * (n + 1) for _ in range(n + 1)]
-    # 	{4: [3, 2], 3: [2], 1: [2], 2: [5]}
-    visited = [False] * (n + 1)  # 1 ~ n
-    node_list = []
-    for _ in range(n + 1):
-        node = Node()
-        node_list.append(node)
+    win_graph = defaultdict(set)  # {4: {2, 3}, 3: {2}, 1: {2}, 2: {5}}
+    lost_graph = defaultdict(set)  # {3: {4}, 2: {1, 3, 4}, 5: {2}}
 
-    for a, b in results:
-        if a not in graph:
-            graph[a] = [b]
-        else:
-            graph[a].append(b)
+    for a, b in results:  # win, lose
+        win_graph[a].add(b)
+        lost_graph[b].add(a)
 
-    # visit graph
-    for start in range(1, n + 1):
-        # if not visited[start]:
-        for next_node in graph[start]:
-            node_list[start].out_cnt += 1
-            node_list[next_node].in_cnt += 1
+    for i in range(1, n + 1):
+        for node in win_graph[i]:  # 4 의 경우 , 3, 2 를 이김
+            lost_graph[node].update(lost_graph[i])
+        for node in lost_graph[i]:
+            win_graph[node].update(win_graph[i])
 
     # check node
     for i in range(1, n + 1):
-        now = node_list[i]
-        print(now.in_cnt, now.out_cnt)
-        if (now.in_cnt + now.out_cnt) == n:
+
+        if (len(win_graph[i]) + len(lost_graph[i])) == (n - 1):
             answer += 1
 
     return answer
